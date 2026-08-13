@@ -29,6 +29,23 @@ Wszystkie treści są prawdziwe, nie są wygenerowane na potrzeby makiety:
 
 Przy aktualizacji cen zmieniaj też datę w przypisie pod menu (`menu-note`).
 
+## Logo
+
+W `logo/` leży oryginalny plik od klienta (`bocaboca-logo.jpg`) oraz dwa kadry
+wycięte z niego bez żadnej ingerencji w grafikę:
+
+- `logo-lockup.jpg` — pełny znak (usta, kieliszek, wordmark, tagline), używany w hero,
+- `logo-mark.jpg` — sam znak (usta + kieliszek), używany w nawigacji i stopce.
+
+Oba kadry są wklejone do `page.html` jako data URI, żeby strona pozostała
+jednym samodzielnym plikiem. Tło strony to dokładnie ten sam piaskowy co
+w logo (`#FED291`), więc kadry wtapiają się w stronę bez widocznej ramki.
+W motywie ciemnym logo zostaje na swoim piaskowym tle i czyta się jako naklejka —
+to celowe, dzięki temu znak nigdy nie jest przemalowywany.
+
+Kolory całej strony pobrane są pipetą z pliku logo: piaskowy `#FED291`
+i winny `#940C0C`.
+
 ## Zdjęcia
 
 Strona celowo nie zawiera zdjęć zastępczych. W `page.html` przygotowana jest
