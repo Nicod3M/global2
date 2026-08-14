@@ -53,9 +53,34 @@ zakomentowana sekcja `GALERIA` — wystarczy wstawić 6 zdjęć (wnętrze, ogró
 o zachodzie słońca, smash burger, patatas bravas, deska serów, bar),
 odkomentować blok i podmienić `src`. Zalecany format: `.webp`, dłuższy bok 1600 px.
 
+## Animacje i interakcje
+
+- Sekwencja startowa hero: logo, dwie linie nagłówka, tekst, przyciski i pasek faktów wchodzą po kolei.
+- Odsłonięcia przy przewijaniu, pozycje karty wjeżdżają kaskadą.
+- Kropka i kreska nagłówka sekcji dorysowują się przy wejściu w kadr.
+- Ocena 4,4 nalicza się, słupki rozkładu ocen wypełniają się.
+- Pasek postępu czytania pod nawigacją, podświetlenie aktywnej sekcji w menu.
+- Panel „zachód słońca nad zalewem" — zbudowany w całości w CSS, bez zdjęcia:
+  słońce zsuwa się na horyzont, odbicie migocze, fale dryfują. Nawiązuje do
+  motywu wracającego w opiniach gości.
+- Filtr karty: cała karta / wegetariańskie / dla dzieci / do dzielenia.
+  Kategorie bez pasujących pozycji chowają się same.
+
+Wszystko respektuje `prefers-reduced-motion` — przy tym ustawieniu strona
+pokazuje się od razu, bez ruchu.
+
+## Responsywność
+
+Sprawdzone na 320, 375, 414, 768, 1024, 1280, 1440 i 1920 px — zero
+przewijania w poziomie. Typografia i odstępy skalują się przez `clamp()`,
+nawigacja zwija się do arkusza pełnoekranowego poniżej 1000 px.
+Jest też arkusz dla druku — karta wychodzi na papier bez tła i przycisków.
+
 ## Motyw jasny i ciemny
 
-Strona jest ciemna domyślnie i ma pełnoprawny wariant jasny — przełącza się
+Motyw jasny to logo wprost: wino na piaskowym. Motyw ciemny to logo odwrócone:
+piaskowy na winnym — akcentem jest wtedy ten sam piaskowy, który znak ma
+we własnym tle, więc naklejka z logo gra z resztą strony. Przełącza się
 automatycznie za ustawieniem systemowym odwiedzającego. Kolory są zdefiniowane
 wyłącznie jako zmienne CSS w `:root`; nie wpisuj wartości kolorów bezpośrednio
 w regułach komponentów.
