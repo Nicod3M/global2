@@ -85,6 +85,8 @@
     --shadow:    0 1px 2px rgba(107, 8, 8, 0.05), 0 8px 28px rgba(107, 8, 8, 0.07);
     --shadow-lift: 0 3px 6px rgba(107, 8, 8, 0.07), 0 20px 46px rgba(107, 8, 8, 0.14);
     --scrim:     rgba(43, 16, 12, 0.82);
+    --veg:       #4F7A2E;
+    --tone:      900ms;
 
     --sky-top:   #FED291;
     --sky-mid:   #F3A05A;
@@ -118,6 +120,7 @@
       --shadow:    0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.45);
       --shadow-lift: 0 3px 8px rgba(0, 0, 0, 0.45), 0 22px 50px rgba(0, 0, 0, 0.55);
       --scrim:     rgba(16, 5, 5, 0.86);
+      --veg:       #9BC46B;
       --sky-top:   #3B1214;
       --sky-mid:   #8E3320;
       --sky-low:   #D06A2C;
@@ -139,12 +142,69 @@
     --shadow:    0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.45);
     --shadow-lift: 0 3px 8px rgba(0, 0, 0, 0.45), 0 22px 50px rgba(0, 0, 0, 0.55);
     --scrim:     rgba(16, 5, 5, 0.86);
+    --veg:       #9BC46B;
     --sky-top:   #3B1214;
     --sky-mid:   #8E3320;
     --sky-low:   #D06A2C;
     --water:     #1B0607;
     --sun:       #FFD98A;
   }
+
+
+  /* ============================================================
+     TONACJE SEKCJI
+     Tło i papier kart przesuwają się w obrębie rodziny piaskowego
+     z logo, w miarę jak czytelnik schodzi w dół strony. Akcent
+     (winny) zostaje bez zmian, więc kontrast tekstu jest stały.
+     Zmienia się wyłącznie wartość zmiennych — przejście animują
+     właściwości, które z nich korzystają.
+     ============================================================ */
+  body[data-tone="menu"]    { --ground: #FDDCA8; --paper: #FFFAF0; }
+  body[data-tone="galeria"] { --ground: #F7C480; --paper: #FFF6E4; }
+  body[data-tone="festiwal"]{ --ground: #FEE2B4; --paper: #FFFBF3; }
+  body[data-tone="kontakt"] { --ground: #F9CB8E; --paper: #FFF8EA; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) body[data-tone="menu"]    { --ground: #33100F; --paper: #431817; }
+    :root:not([data-theme="light"]) body[data-tone="galeria"] { --ground: #1E0708; --paper: #340F10; }
+    :root:not([data-theme="light"]) body[data-tone="festiwal"]{ --ground: #351312; --paper: #451B19; }
+    :root:not([data-theme="light"]) body[data-tone="kontakt"] { --ground: #240A0A; --paper: #381313; }
+  }
+  :root[data-theme="dark"] body[data-tone="menu"]    { --ground: #33100F; --paper: #431817; }
+  :root[data-theme="dark"] body[data-tone="galeria"] { --ground: #1E0708; --paper: #340F10; }
+  :root[data-theme="dark"] body[data-tone="festiwal"]{ --ground: #351312; --paper: #451B19; }
+  :root[data-theme="dark"] body[data-tone="kontakt"] { --ground: #240A0A; --paper: #381313; }
+
+  body,
+  .nav,
+  .sheet,
+  .card,
+  .traits li,
+  .bar .t {
+    transition: background-color var(--tone) var(--ease);
+  }
+  .card { transition: background-color var(--tone) var(--ease), box-shadow 0.4s var(--ease), transform 0.4s var(--ease); }
+
+  @media (prefers-reduced-motion: reduce) {
+    body, .nav, .sheet, .card, .traits li, .bar .t { transition: none; }
+  }
+
+  /* ---------- ikony ---------- */
+  .ico {
+    width: 1em; height: 1em;
+    fill: none; stroke: currentColor;
+    stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+    vertical-align: -0.13em; flex-shrink: 0;
+  }
+  .ico--fill { fill: currentColor; stroke: none; }
+  /* liść: blaszka wypełniona, ogonek kreską — czytelny już przy 14 px */
+  .ico--leaf > use { fill: currentColor; stroke: none; }
+  .ico--leaf { stroke: currentColor; stroke-width: 1.9; }
+
+  .veg { display: inline-block; margin-left: 6px; color: var(--veg); font-size: 1.02em; line-height: 1; }
+
+  .stars-row { display: inline-flex; align-items: center; gap: 2px; color: var(--accent); font-size: 0.95rem; }
+  .stars-sm { display: inline-flex; align-items: center; gap: 1px; color: var(--accent); font-size: 0.8rem; vertical-align: -0.1em; }
 
   /* ---------- baza ---------- */
   * { box-sizing: border-box; }
@@ -439,6 +499,7 @@
   /* ---------- Menu ---------- */
   .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(12px, 1.8vw, 16px); }
   .tab, .toggle {
+    display: inline-flex; align-items: center; gap: 7px;
     font-family: inherit;
     font-size: clamp(0.78rem, 0.74rem + 0.15vw, 0.86rem);
     font-weight: 700; color: var(--muted);
@@ -450,7 +511,6 @@
   .tab:hover, .toggle:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
   .tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .toggle[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-  .toggle::before { content: "🌱"; margin-right: 6px; font-size: 0.9em; }
 
   .menu-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
   .menu-status { font-size: 0.82rem; color: var(--muted); margin-bottom: clamp(16px, 2.2vw, 24px); }
@@ -546,7 +606,7 @@
   .lb.open img { transform: none; }
   .lb figcaption { color: #FFF3DD; font-size: 0.86rem; text-align: center; max-width: 52ch; }
   .lb-close, .lb-nav {
-    position: absolute; top: clamp(10px, 2vw, 22px); right: clamp(10px, 2vw, 22px);
+    position: absolute; font-size: 1.15rem; top: clamp(10px, 2vw, 22px); right: clamp(10px, 2vw, 22px);
     width: 46px; height: 46px; border-radius: 50%;
     border: 1.5px solid rgba(255, 243, 221, 0.5);
     background: transparent; color: #FFF3DD;
@@ -587,6 +647,8 @@
   .bars { display: grid; gap: 8px; margin-top: clamp(18px, 3vw, 30px); max-width: 330px; }
   .bar { display: grid; grid-template-columns: 24px minmax(0, 1fr) 32px; gap: 10px; align-items: center; }
   .bar .k, .bar .v { font-size: 0.76rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar .k { display: inline-flex; align-items: center; gap: 2px; color: var(--accent); }
+  .bar .k .ico { width: 0.82em; height: 0.82em; }
   .bar .v { text-align: right; }
   .bar .t { height: 6px; border-radius: 100px; background: var(--paper); overflow: hidden; }
   .bar .t i { display: block; height: 100%; border-radius: 100px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 1s var(--ease); }
@@ -772,6 +834,20 @@
   }
 </style>
 
+<svg class="sprite" aria-hidden="true" focusable="false"
+     style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-leaf" viewBox="0 0 24 24">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" class="stem"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24">
+    <path d="M12 2.6l2.9 6 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.5l6.5-.9z"/>
+  </symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+</svg>
+
 <header class="nav" id="nav">
   <div class="shell nav-inner">
     <a class="brand" href="#top">
@@ -808,7 +884,7 @@
 <main id="top">
 
   <!-- ============================ HERO ============================ -->
-  <section class="hero">
+  <section class="hero" data-tone="start">
     <div class="shell hero-grid">
       <div>
         <h1>
@@ -832,7 +908,7 @@
       </div>
       <div class="hero-shot">
         <img src="img/burger-neon.jpg" alt="Smash burger na łupkowej desce, wieczorem przy neonie" width="1200" height="1600" loading="eager" decoding="async" fetchpriority="high">
-        <span class="hero-badge"><i aria-hidden="true"></i> 4,4 ★ · 214 opinii w Google</span>
+        <span class="hero-badge"><i aria-hidden="true"></i> 4,4 <span class="stars-sm" aria-hidden="true"><svg class="ico ico--fill"><use href="#i-star"/></svg></span> · 214 opinii w Google</span>
       </div>
     </div>
   </section>
@@ -864,7 +940,7 @@
   </div>
 
   <!-- ============================ KONCEPT ============================ -->
-  <section class="sec" id="koncept">
+  <section class="sec" id="koncept" data-tone="start">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Koncept</span><span class="rule" aria-hidden="true"></span></div>
       <div class="story">
@@ -907,7 +983,7 @@
   </section>
 
   <!-- ============================ MENU ============================ -->
-  <section class="sec" id="menu">
+  <section class="sec" id="menu" data-tone="menu">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Menu</span><span class="rule" aria-hidden="true"></span></div>
       <h2>Do dzielenia i do zjedzenia w całości</h2>
@@ -918,7 +994,7 @@
           <button class="tab" type="button" role="tab" data-tab="bar" aria-selected="false">Bar</button>
           <button class="tab" type="button" role="tab" data-tab="kawa" aria-selected="false">Kawa i napoje</button>
         </div>
-        <button class="toggle" type="button" id="vegOnly" aria-pressed="false">Tylko wege</button>
+        <button class="toggle" type="button" id="vegOnly" aria-pressed="false"><svg class="ico ico--leaf" aria-hidden="true"><use href="#i-leaf"/></svg> Tylko wege</button>
       </div>
       <p class="menu-status" id="menuStatus" role="status">Karta dań — tapas, burgery, sałatki i dodatki.</p>
 
@@ -931,19 +1007,19 @@
             <h3 id="cat-tapasy">Tapasy</h3>
             <p class="cat-note">Na środek stołu, do wina i do dzielenia.</p>
             <ul class="cat-list">
-              <li data-veg="1"><div class="row"><span class="name">grillowane papryczki padrone<span class="gram">150 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">22 zł</span><span class="desc">sól w płatkach / oliwa extra virgin</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">patatas bravas<span class="gram">180 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">20 zł</span><span class="desc">chrupiące ziemniaki / pietruszka / ser hiszpański dojrzewający / pikantny sos paprykowy</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">corn ribs<span class="gram">250 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">21 zł</span><span class="desc">grillowana kukurydza / masło ziołowe / cebulka dymka / ser hiszpański / sól w płatkach / sos ranch</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">grzanka z gorgonzolą i gruszką<span class="gram">220 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">26 zł</span><span class="desc">karmelizowana gruszka / gorgonzola / miód / orzechy włoskie / tymianek</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">szaszłyk z grilla<span class="gram">280 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">31 zł</span><span class="desc">halloumi / pieczarki / cukinia / czerwona cebula / papryka / sos ranch</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">grillowane papryczki padrone<span class="gram">150 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">22 zł</span><span class="desc">sól w płatkach / oliwa extra virgin</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">patatas bravas<span class="gram">180 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">20 zł</span><span class="desc">chrupiące ziemniaki / pietruszka / ser hiszpański dojrzewający / pikantny sos paprykowy</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">corn ribs<span class="gram">250 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">21 zł</span><span class="desc">grillowana kukurydza / masło ziołowe / cebulka dymka / ser hiszpański / sól w płatkach / sos ranch</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">grzanka z gorgonzolą i gruszką<span class="gram">220 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">26 zł</span><span class="desc">karmelizowana gruszka / gorgonzola / miód / orzechy włoskie / tymianek</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">szaszłyk z grilla<span class="gram">280 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">31 zł</span><span class="desc">halloumi / pieczarki / cukinia / czerwona cebula / papryka / sos ranch</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">tacosy z kurczakiem<span class="gram">250 g</span></span><span class="price">31 zł</span><span class="desc">guacamole / sałata lodowa / pico de gallo / sos serowy / sos sriracha-mayo</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">tacosy z krewetkami<span class="gram">250 g</span></span><span class="price">28 zł</span><span class="desc">guacamole / kapusta czerwona / pico de gallo / sos ranch</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">tacosy z boczniakami bbq<span class="gram">250 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">28 zł</span><span class="desc">kukurydza / kapusta czerwona / pico de gallo / sos ranch</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">tacosy z boczniakami bbq<span class="gram">250 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">28 zł</span><span class="desc">kukurydza / kapusta czerwona / pico de gallo / sos ranch</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">gambas al ajillo<span class="gram">220 g</span></span><span class="price">39 zł</span><span class="desc">krewetki 6 szt. / pietruszka / czosnek / chili / grzanka</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">chicken bbq quesadilla<span class="gram">350 g</span></span><span class="price">37 zł</span><span class="desc">cheddar / kukurydza / papryka / sos ranch</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">loaded fries<span class="gram">350 g</span></span><span class="price">32 zł</span><span class="desc">frytki / bekon / szczypiorek / sos serowy / sos classic</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">nachosy<span class="gram">180 / 350 g</span></span><span class="price">28 / 38 zł</span><span class="desc">wołowina / sos serowy / pico de gallo / jalapeño</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">nachosy wege<span class="gram">150 / 300 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">24 / 33 zł</span><span class="desc">sos serowy / guacamole / pico de gallo / jalapeño</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">nachosy wege<span class="gram">150 / 300 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">24 / 33 zł</span><span class="desc">sos serowy / guacamole / pico de gallo / jalapeño</span></div></li>
             </ul>
           </div>
         </section>
@@ -959,7 +1035,7 @@
             <ul class="cat-list">
               <li data-veg="0"><div class="row"><span class="name">cheese smash<span class="gram">300 / 400 g</span></span><span class="price">32 / 39 zł</span><span class="desc">wołowina / cheddar / sałata / pikle / cebula czerwona / sos classic</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">becon bbq smash<span class="gram">350 / 450 g</span></span><span class="price">34 / 41 zł</span><span class="desc">wołowina / bekon / cheddar / sałata / pikle / pomidor / cebula czerwona / sos mayo-bbq</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">vege smash<span class="gram">400 / 500 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">33 / 40 zł</span><span class="desc">kotlet z czerwonej fasoli i pieczarek / cheddar / sałata / cebula / pikle / pomidor / sos ranch</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">vege smash<span class="gram">400 / 500 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">33 / 40 zł</span><span class="desc">kotlet z czerwonej fasoli i pieczarek / cheddar / sałata / cebula / pikle / pomidor / sos ranch</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">smash kids<span class="gram">250 g</span></span><span class="price">26 zł</span><span class="desc">wołowina / cheddar / sos classic</span></div></li>
             </ul>
 
@@ -974,8 +1050,8 @@
 
             <p class="subhead">Frytki</p>
             <ul class="cat-list">
-              <li data-veg="1"><div class="row"><span class="name">frytki<span class="gram">do burgera / solo</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">8 / 13 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">frytki z batata<span class="gram">do burgera / solo</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">13 / 18 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">frytki<span class="gram">do burgera / solo</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">8 / 13 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">frytki z batata<span class="gram">do burgera / solo</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">13 / 18 zł</span></div></li>
             </ul>
           </div>
         </section>
@@ -989,17 +1065,17 @@
             <p class="subhead">Sałatki</p>
             <ul class="cat-list">
               <li data-veg="0"><div class="row"><span class="name">sałatka z kurczakiem<span class="gram">400 g</span></span><span class="price">40 zł</span><span class="desc">panierowany kurczak / sałaty / marynowane ogórki / cebula dymka / mango / orzechy ziemne / sezam / dressing orzechowo-sojowy</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">sałatka z halloumi<span class="gram">400 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">39 zł</span><span class="desc">halloumi / szpinak baby / pomidorki / granat / orzechy / pomarańcze / dressing hot honey</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sałatka z halloumi<span class="gram">400 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">39 zł</span><span class="desc">halloumi / szpinak baby / pomidorki / granat / orzechy / pomarańcze / dressing hot honey</span></div></li>
             </ul>
 
             <p class="subhead">Zupy</p>
             <ul class="cat-list">
-              <li data-veg="1"><div class="row"><span class="name">krem z pomidorów<span class="veg" title="wegetariańskie">🌱</span></span><span class="price">25 zł</span><span class="desc">pomidory pelati / mozzarella / bazylia</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">krem z pomidorów<span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">25 zł</span><span class="desc">pomidory pelati / mozzarella / bazylia</span></div></li>
             </ul>
 
             <p class="subhead">Desery</p>
             <ul class="cat-list">
-              <li data-veg="1"><div class="row"><span class="name">deser dnia<span class="veg" title="wegetariańskie">🌱</span></span><span class="price">zapytaj obsługę</span><span class="desc">Ciasta i desery robimy na bieżąco — bywają sernik ze śliwką i kakaową kruszonką, ciasto marchewkowe, brownie z kremem pistacjowym, cannoli, makaroniki i pączki. O dzisiejszy wybór zapytaj obsługę.</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">deser dnia<span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">zapytaj obsługę</span><span class="desc">Ciasta i desery robimy na bieżąco — bywają sernik ze śliwką i kakaową kruszonką, ciasto marchewkowe, brownie z kremem pistacjowym, cannoli, makaroniki i pączki. O dzisiejszy wybór zapytaj obsługę.</span></div></li>
             </ul>
           </div>
         </section>
@@ -1010,15 +1086,15 @@
             <h3 id="cat-dodatki">Dodatki</h3>
             <p class="cat-note">Sosy i to, czym można dobić burgera.</p>
             <ul class="cat-list">
-              <li data-veg="1"><div class="row"><span class="name">sos serowy<span class="gram">100 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">10 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">sos ranch<span class="gram">50 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">5 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">sos sriracha-mayo<span class="gram">50 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">5 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">sos trufle-mayo<span class="gram">50 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">5 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">sos classic<span class="gram">50 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">3 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">sos mayo-bbq<span class="gram">50 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">3 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">ketchup<span class="gram">50 g</span><span class="veg" title="wegetariańskie">🌱</span></span><span class="price">3 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sos serowy<span class="gram">100 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">10 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sos ranch<span class="gram">50 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">5 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sos sriracha-mayo<span class="gram">50 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">5 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sos trufle-mayo<span class="gram">50 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">5 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sos classic<span class="gram">50 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">3 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">sos mayo-bbq<span class="gram">50 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">3 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">ketchup<span class="gram">50 g</span><span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">3 zł</span></div></li>
               <li data-veg="0"><div class="row"><span class="name">wołowina do burgera</span><span class="price">10 zł</span></div></li>
-              <li data-veg="1"><div class="row"><span class="name">pieczywo<span class="veg" title="wegetariańskie">🌱</span></span><span class="price">5 zł</span></div></li>
+              <li data-veg="1"><div class="row"><span class="name">pieczywo<span class="veg" title="wegetariańskie" role="img" aria-label="danie wegetariańskie"><svg class="ico ico--leaf"><use href="#i-leaf"/></svg></span></span><span class="price">5 zł</span></div></li>
             </ul>
           </div>
         </section>
@@ -1166,7 +1242,7 @@
       </div>
 
       <p class="menu-note">
-        Karta obowiązująca w lokalu, stan na sierpień 2026. 🌱 oznacza pozycje bezmięsne —
+        Karta obowiązująca w lokalu, stan na sierpień 2026. <span class="veg" style="margin-left:0"><svg class="ico ico--leaf" aria-hidden="true"><use href="#i-leaf"/></svg></span> oznacza pozycje bezmięsne —
         przy diecie wegańskiej i alergiach dopytaj obsługę. Karta dowozowa na
         <a href="https://www.ubereats.com/pl/store/boca-boca-rzeszow/ajPMjgy_U4iiRHnPGe-Tnw" target="_blank" rel="noopener">Uber Eats</a>
         i <a href="https://www.pyszne.pl/menu/boca-boca" target="_blank" rel="noopener">Pyszne.pl</a>
@@ -1176,7 +1252,7 @@
   </section>
 
   <!-- ============================ GALERIA ============================ -->
-  <section class="sec" id="galeria">
+  <section class="sec" id="galeria" data-tone="galeria">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Galeria</span><span class="rule" aria-hidden="true"></span></div>
       <h2>Z talerza, z baru i z ogródka</h2>
@@ -1202,7 +1278,7 @@
 
   <!-- ============================ ZACHÓD SŁOŃCA ============================ -->
   <div class="shell">
-    <div class="sunset" id="sunset">
+    <div class="sunset" id="sunset" data-tone="galeria">
       <span class="sun" aria-hidden="true"></span>
       <span class="glint" aria-hidden="true"></span>
       <span class="wave" aria-hidden="true"></span>
@@ -1216,7 +1292,7 @@
   </div>
 
   <!-- ============================ RESTAURANT WEEK ============================ -->
-  <section class="sec" id="restaurant-week">
+  <section class="sec" id="restaurant-week" data-tone="festiwal">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Festiwal</span><span class="rule" aria-hidden="true"></span></div>
       <h2>RestaurantWeek 2026 — nasz debiut</h2>
@@ -1251,7 +1327,7 @@
   </section>
 
   <!-- ============================ OPINIE ============================ -->
-  <section class="sec" id="opinie">
+  <section class="sec" id="opinie" data-tone="festiwal">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Opinie</span><span class="rule" aria-hidden="true"></span></div>
       <h2>Co mówią goście w Google</h2>
@@ -1262,35 +1338,35 @@
             <span class="n" id="scoreNum" data-target="4.4">0,0</span>
             <span class="sr-only">Średnia ocena 4,4 na 5 na podstawie 214 opinii w Google.</span>
             <span class="meta">
-              <span class="stars" aria-hidden="true">★★★★☆</span>
+              <span class="stars-row" aria-hidden="true"><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span>
               <span class="cnt">214 opinii · Google</span>
             </span>
           </div>
           <div class="bars" id="bars">
-            <div class="bar"><span class="k">5★</span><span class="t"><i style="--w: 0.757"></i></span><span class="v">162</span></div>
-            <div class="bar"><span class="k">4★</span><span class="t"><i style="--w: 0.084"></i></span><span class="v">18</span></div>
-            <div class="bar"><span class="k">3★</span><span class="t"><i style="--w: 0.037"></i></span><span class="v">8</span></div>
-            <div class="bar"><span class="k">2★</span><span class="t"><i style="--w: 0.042"></i></span><span class="v">9</span></div>
-            <div class="bar"><span class="k">1★</span><span class="t"><i style="--w: 0.079"></i></span><span class="v">17</span></div>
+            <div class="bar"><span class="k">5<svg class="ico ico--fill" aria-hidden="true"><use href="#i-star"/></svg></span><span class="t"><i style="--w: 0.757"></i></span><span class="v">162</span></div>
+            <div class="bar"><span class="k">4<svg class="ico ico--fill" aria-hidden="true"><use href="#i-star"/></svg></span><span class="t"><i style="--w: 0.084"></i></span><span class="v">18</span></div>
+            <div class="bar"><span class="k">3<svg class="ico ico--fill" aria-hidden="true"><use href="#i-star"/></svg></span><span class="t"><i style="--w: 0.037"></i></span><span class="v">8</span></div>
+            <div class="bar"><span class="k">2<svg class="ico ico--fill" aria-hidden="true"><use href="#i-star"/></svg></span><span class="t"><i style="--w: 0.042"></i></span><span class="v">9</span></div>
+            <div class="bar"><span class="k">1<svg class="ico ico--fill" aria-hidden="true"><use href="#i-star"/></svg></span><span class="t"><i style="--w: 0.079"></i></span><span class="v">17</span></div>
           </div>
         </div>
 
         <div class="quotes">
           <figure class="quote card lift">
             <blockquote>„Miejscówka top! Piękny wystrój wewnątrz. Co do burgerów — nic dodać, nic ująć, po prostu SMASH."</blockquote>
-            <cite>Natalia · ★★★★★ · lipiec 2025</cite>
+            <cite>Natalia · <span class="stars-sm" aria-hidden="true"><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg></span> · lipiec 2025</cite>
           </figure>
           <figure class="quote card lift d1">
             <blockquote>„Nie wiem, czy jadłem lepszego smash burgera w tym mieście. Miła obsługa, potrafią doradzić przy wyborze z karty."</blockquote>
-            <cite>Kuba Dąbrowski · ★★★★★ · lipiec 2025</cite>
+            <cite>Kuba Dąbrowski · <span class="stars-sm" aria-hidden="true"><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg></span> · lipiec 2025</cite>
           </figure>
           <figure class="quote card lift d1">
             <blockquote>„Ostatnio moje ulubione miejsce z burgerami. Nie mam się do czego przyczepić — wszystko topka."</blockquote>
-            <cite>Izabela Szmidtke · ★★★★★ · grudzień 2025</cite>
+            <cite>Izabela Szmidtke · <span class="stars-sm" aria-hidden="true"><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg></span> · grudzień 2025</cite>
           </figure>
           <figure class="quote card lift d2">
             <blockquote>„Przepyszne jedzenie, burgery bardzo syte, frytki i bataty premium — a to wszystko w bardzo fajnym, wakacyjnym klimacie."</blockquote>
-            <cite>Krystyna Konarzewska · ★★★★★ · wrzesień 2025</cite>
+            <cite>Krystyna Konarzewska · <span class="stars-sm" aria-hidden="true"><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg><svg class="ico ico--fill"><use href="#i-star"/></svg></span> · wrzesień 2025</cite>
           </figure>
         </div>
       </div>
@@ -1298,7 +1374,7 @@
   </section>
 
   <!-- ============================ ZAMÓW ============================ -->
-  <section class="sec" id="zamow">
+  <section class="sec" id="zamow" data-tone="kontakt">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Zamów</span><span class="rule" aria-hidden="true"></span></div>
       <h2>Na miejscu, na wynos albo z dowozem</h2>
@@ -1323,14 +1399,15 @@
   </section>
 
   <!-- ============================ KONTAKT ============================ -->
-  <section class="sec" id="kontakt">
+  <section class="sec" id="kontakt" data-tone="kontakt">
     <div class="shell">
       <div class="sec-head"><span class="bullet" aria-hidden="true"></span><span class="label">Kontakt</span><span class="rule" aria-hidden="true"></span></div>
       <h2>Wpadnij nad zalew</h2>
 
       <div class="contact">
         <div>
-          <ul class="contact-list card lift">
+          <div class="card lift">
+          <ul class="contact-list">
             <li>
               <span class="label">Adres</span>
               <span class="v">
@@ -1351,6 +1428,7 @@
             </li>
             <li><span class="label">Parking</span><span class="v">Bezpłatny, przy lokalu</span></li>
           </ul>
+          </div>
           <div class="venue-shot lift d1">
             <img src="img/witryna.jpg" alt="Witryna BOCA BOCA przy Kwiatkowskiego 44c o zachodzie słońca" width="1100" height="1467" loading="lazy" decoding="async">
           </div>
@@ -1400,9 +1478,9 @@
 
 <!-- lightbox galerii -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie" hidden>
-  <button class="lb-close" id="lbClose" type="button" aria-label="Zamknij">✕</button>
-  <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Poprzednie zdjęcie">‹</button>
-  <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Następne zdjęcie">›</button>
+  <button class="lb-close" id="lbClose" type="button" aria-label="Zamknij"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+  <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Poprzednie zdjęcie"><svg class="ico" aria-hidden="true"><use href="#i-prev"/></svg></button>
+  <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Następne zdjęcie"><svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
   <figure>
     <img id="lbImg" src="" alt="">
     <figcaption id="lbCap"></figcaption>
@@ -1419,6 +1497,35 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
+
+    /* ---------- tonacja tła zależna od sekcji ---------- */
+    /* Sekcje deklarują data-tone; wygrywa ta, której środek jest
+       najbliżej środka okna. Zmienia się tylko wartość zmiennych
+       CSS, samo przejście animują właściwości, które z nich żyją. */
+    var toned = Array.prototype.slice.call(document.querySelectorAll("[data-tone]"));
+    var currentTone = "start";
+
+    function pickTone() {
+      var mid = window.innerHeight / 2;
+      var hit = null, nearest = null, bestDist = Infinity;
+      toned.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) return;
+        /* sekcja przecinająca oś ekranu wygrywa — działa też dla sekcji
+           wyższych niż okno, gdzie liczenie odległości od środka myli */
+        if (r.top <= mid && r.bottom >= mid) hit = el;
+        var dist = Math.abs((r.top + r.bottom) / 2 - mid);
+        if (dist < bestDist) { bestDist = dist; nearest = el; }
+      });
+      var best = hit || nearest;
+      var tone = best ? best.getAttribute("data-tone") : "start";
+      if (tone !== currentTone) {
+        currentTone = tone;
+        if (tone === "start") document.body.removeAttribute("data-tone");
+        else document.body.setAttribute("data-tone", tone);
+      }
+    }
+
     /* ---------- nav: cień + pasek postępu ---------- */
     var nav = document.getElementById("nav");
     var progress = document.getElementById("progress");
@@ -1431,6 +1538,7 @@
         nav.classList.toggle("is-stuck", y > 8);
         var max = document.documentElement.scrollHeight - window.innerHeight;
         progress.style.transform = "scaleX(" + (max > 0 ? Math.min(y / max, 1) : 0) + ")";
+        pickTone();
         ticking = false;
       });
     }

@@ -63,6 +63,29 @@ we własnym tle. Przełącza się automatycznie za ustawieniem systemowym
 odwiedzającego. Kolory są zdefiniowane wyłącznie jako zmienne CSS w `:root`;
 nie wpisuj wartości kolorów bezpośrednio w regułach komponentów.
 
+## Tonacje sekcji
+
+Tło strony i papier kart przesuwają się w obrębie rodziny piaskowego z logo
+w miarę schodzenia w dół: start → menu → galeria → festiwal i opinie →
+zamówienia i kontakt. Akcent (winny) zostaje bez zmian, więc kontrast tekstu
+jest stały niezależnie od tonacji.
+
+Sekcje deklarują tonację atrybutem `data-tone`; skrypt ustawia ten sam atrybut
+na `body`, a zmieniają się wyłącznie wartości zmiennych CSS. Przejście animują
+właściwości, które z tych zmiennych korzystają (`background-color`), przez 0,9 s.
+Wygrywa sekcja przecinająca oś ekranu — dzięki temu działa też dla sekcji
+wyższych niż okno, jak Menu.
+
+Dodanie nowej tonacji: dopisz blok `body[data-tone="nazwa"]` w obu motywach
+i nadaj sekcji `data-tone="nazwa"`.
+
+## Ikony
+
+Strona nie używa emotikon. Wszystkie znaki graficzne — liść przy pozycjach
+bezmięsnych, gwiazdki przy ocenach, krzyżyk i strzałki lightboxa — są
+w sprite'cie SVG na początku dokumentu i wstawiane przez `<use>`.
+Dziedziczą kolor z `currentColor`, więc działają w obu motywach.
+
 ## Interakcje
 
 - **Karta** — trzy zakładki (Jedzenie / Bar / Kawa i napoje) plus przełącznik
