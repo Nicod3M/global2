@@ -1,4 +1,35 @@
 <!doctype html>
+<!--
+  BOCA BOCA — bocaboca.pl
+  Kwiatkowskiego 44c lok. U2, 35-311 Rzeszów · 790 394 366 · biuro@bocaboca.pl
+
+  WGRANIE NA SERWER
+  Wrzuć ten plik i katalog img/ do katalogu głównego domeny. To wszystko —
+  strona nie ma backendu, bazy ani zewnętrznych zasobów. Nic się nie kompiluje,
+  ten plik edytuje się wprost.
+
+  CO GDZIE ZMIENIĆ
+  · Ceny i dania  — sekcja <section id="menu">, każda pozycja to jedno <li>.
+                    Zmieniając ceny popraw też datę w przypisie pod kartą
+                    (klasa "menu-note").
+  · Godziny       — w dwóch miejscach naraz: tabela .hours-row oraz stała HOURS
+                    w skrypcie na dole (minuty od północy, 0 = niedziela).
+  · Zdjęcia       — katalog img/. Podmieniając plik popraw width i height
+                    w znaczniku <img>, inaczej układ skoczy przy ładowaniu.
+  · Kolory        — wyłącznie zmienne w :root (jasny) i @media dark (ciemny).
+                    Nie wpisuj kolorów w regułach komponentów.
+  · Tonacje sekcji— body[data-tone="..."]; sekcja deklaruje swoją atrybutem
+                    data-tone, resztę robi skrypt.
+
+  SKĄD SĄ DANE (wszystkie prawdziwe, nic nie jest wymyślone)
+  · Karta, ceny i oznaczenia wege — przepisane z menu obowiązującego w lokalu.
+    Uwaga: karta dowozowa na Uber Eats i Pyszne.pl jest węższa i ma inne ceny.
+  · Godziny, adres, telefon, ocena 4,4 z 214 opinii — profil Google Maps.
+  · Cytaty gości — prawdziwe opinie Google z autorem i datą.
+  · Menu festiwalowe — materiały prasowe RestaurantWeek 2026.
+  · Zdjęcia i logo — materiały własne lokalu. Logo nie jest przerysowane,
+    to oryginalny plik przycięty do dwóch kadrów.
+-->
 <html lang="pl">
 <head>
 <meta charset="utf-8">
@@ -18,8 +49,8 @@
 <meta property="og:image" content="https://bocaboca.pl/img/burger-neon.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="logo/logo-mark.jpg">
-<link rel="apple-touch-icon" href="logo/logo-mark.jpg">
+<link rel="icon" href="img/logo-mark.jpg">
+<link rel="apple-touch-icon" href="img/logo-mark.jpg">
 
 <script type="application/ld+json">
 {
@@ -851,7 +882,7 @@
 <header class="nav" id="nav">
   <div class="shell nav-inner">
     <a class="brand" href="#top">
-      <img class="logo" src="logo/logo-mark.jpg" alt="" width="460" height="315">
+      <img class="logo" src="img/logo-mark.jpg" alt="" width="460" height="315">
       <span class="brand-name">BOCA BOCA</span>
     </a>
     <nav aria-label="Główna">
@@ -1463,7 +1494,7 @@
 <footer class="foot">
   <div class="shell">
     <div class="foot-top">
-      <span class="foot-lock"><img class="logo" src="logo/logo-lockup.jpg" alt="BOCA BOCA — tapas, burger, wine" width="720" height="892" loading="lazy" decoding="async"></span>
+      <span class="foot-lock"><img class="logo" src="img/logo-lockup.jpg" alt="BOCA BOCA — tapas, burger, wine" width="720" height="892" loading="lazy" decoding="async"></span>
       <div class="foot-links">
         <a href="#menu">Menu</a>
         <a href="#galeria">Galeria</a>
